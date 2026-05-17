@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package xiangqi.modelo;
+package xiangqi.piezas;
 
 /**
  *
  * @author hermi
  */
-public class Caballo extends Pieza {
+public final class Oficial extends Pieza {
 
-    public Caballo(int fila, int columna, boolean esRojo) {
+    public Oficial(int fila, int columna, boolean esRojo) {
         super(fila, columna, esRojo);
     }
 
@@ -19,20 +19,12 @@ public class Caballo extends Pieza {
         int difFila = Math.abs(filaDestino - fila);
         int difCol = Math.abs(colDestino - columna);
 
-        if (!((difFila == 2 && difCol == 1) || (difFila == 1 && difCol == 2))) {
+        if (difFila != 1 || difCol != 1) {
             return false;
         }
 
-        if (difFila == 2) {
-            int filaMedia = fila + (filaDestino > fila ? 1 : -1);
-            if (tablero[filaMedia][columna] != null) {
-                return false;
-            }
-        } else {
-            int colMedia = columna + (colDestino > columna ? 1 : -1);
-            if (tablero[fila][colMedia] != null) {
-                return false;
-            }
+        if (!enPalacio(filaDestino, colDestino)) {
+            return false;
         }
 
         Pieza destino = tablero[filaDestino][colDestino];
@@ -41,5 +33,14 @@ public class Caballo extends Pieza {
         }
 
         return true;
+    }
+
+    private boolean enPalacio(int f, int c) {
+        boolean colValida = (c >= 3 && c <= 5);
+        if (esRojo) {
+            return colValida && (f >= 7 && f <= 9);
+        } else {
+            return colValida && (f >= 0 && f <= 2);
+        }
     }
 }

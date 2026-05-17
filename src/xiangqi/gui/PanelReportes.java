@@ -5,7 +5,7 @@
 package xiangqi.gui;
 
 import xiangqi.jugador.Player;
-import xiangqi.storage.StorageImpl;
+import xiangqi.datos.BaseDatos;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -27,16 +27,16 @@ import java.awt.Color;
  */
 public class PanelReportes extends JPanel {
 
-    private static final Color FONDO = new Color(30, 30, 30);
-    private static final Color DORADO = new Color(255, 215, 0);
-    private static final Color TEXTO = Color.WHITE;
-    private static final Color BTN_FONDO = new Color(60, 60, 60);
-    private static final Color BTN_BORDE = new Color(255, 215, 0);
+    private static final Color FONDO = new Color(45, 32, 22);
+    private static final Color DORADO = new Color(250, 220, 170);
+    private static final Color TEXTO = new Color(210, 185, 145);
+    private static final Color BTN_FONDO = new Color(75, 55, 40);
+    private static final Color BTN_BORDE = new Color(180, 140, 90);
 
     private AppFrame app;
-    private StorageImpl storage;
+    private BaseDatos storage;
 
-    public PanelReportes(AppFrame app, StorageImpl storage) {
+    public PanelReportes(AppFrame app, BaseDatos storage) {
         this.app = app;
         this.storage = storage;
         initUI();
@@ -54,7 +54,7 @@ public class PanelReportes extends JPanel {
         JTextArea area = new JTextArea();
         area.setEditable(false);
         area.setFont(new Font("Monospaced", Font.PLAIN, 13));
-        area.setBackground(new Color(45, 45, 45));
+        area.setBackground(new Color(30, 20, 12) );
         area.setForeground(TEXTO);
         area.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         JScrollPane scroll = new JScrollPane(area);
@@ -126,8 +126,7 @@ public class PanelReportes extends JPanel {
     }
 
     private void mostrarLogs(JTextArea area) {
-        ArrayList<String> logs = storage.getLogsDePlayer(
-                app.getPlayerLogueado().getUsername());
+        ArrayList<String> logs = storage.getLogsDePlayer(app.getPlayerLogueado().getUsername());
 
         StringBuilder sb = new StringBuilder();
         sb.append("=== MIS ULTIMOS PARTIDOS ===\n\n");

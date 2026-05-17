@@ -5,7 +5,7 @@
 package xiangqi.gui;
 
 import xiangqi.jugador.Player;
-import xiangqi.storage.StorageImpl;
+import xiangqi.datos.BaseDatos;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -26,16 +26,16 @@ import javax.swing.JOptionPane;
  */
 public class PanelMenuInicio extends JPanel {
 
-    private static final Color FONDO = new Color(30, 30, 30);
-    private static final Color DORADO = new Color(255, 215, 0);
-    private static final Color TEXTO = Color.WHITE;
-    private static final Color BTN_FONDO = new Color(60, 60, 60);
-    private static final Color BTN_BORDE = new Color(255, 215, 0);
+    private static final Color FONDO = new Color(45, 32, 22);
+    private static final Color DORADO = new Color(250, 220, 170);
+    private static final Color TEXTO = new Color(210, 185, 145);
+    private static final Color BTN_FONDO = new Color(75, 55, 40);
+    private static final Color BTN_BORDE = new Color(180, 140, 90);
 
     private AppFrame app;
-    private StorageImpl storage;
+    private BaseDatos storage;
 
-    public PanelMenuInicio(AppFrame app, StorageImpl storage) {
+    public PanelMenuInicio(AppFrame app, BaseDatos storage) {
         this.app = app;
         this.storage = storage;
         initUI();
@@ -150,18 +150,14 @@ public class PanelMenuInicio extends JPanel {
             Player player = storage.buscarPlayer(user);
 
             if (player != null && player.getPassword().equals(pass) && player.isActivo()) {
-                JOptionPane.showMessageDialog(null,
-                        "¡Login exitoso! Bienvenido " + player.getUsername(),
-                        "Login", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null,"¡Login exitoso! Bienvenido " + player.getUsername(), "Login", JOptionPane.INFORMATION_MESSAGE);
                 app.setPlayerLogueado(player);
                 app.getContenedor().add(new PanelMenuPrincipal(app, storage), "PRINCIPAL");
                 app.getContenedor().revalidate();
                 app.getContenedor().repaint();
                 app.mostrar("PRINCIPAL");
             } else {
-                JOptionPane.showMessageDialog(null,
-                        "Usuario o password incorrecto. Intenta de nuevo.",
-                        "Error de Login", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Usuario o password incorrecto. Intenta de nuevo.", "Error de Login", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -227,29 +223,21 @@ public class PanelMenuInicio extends JPanel {
             String pass = new String(txtPass.getPassword());
 
             if (user.isEmpty()) {
-                JOptionPane.showMessageDialog(null,
-                        "El username no puede estar vacío.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El username no puede estar vacío.","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (storage.buscarPlayer(user) != null) {
-                JOptionPane.showMessageDialog(null,
-                        "Ese username ya existe, elige otro.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Ese username ya existe, elige otro.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (!Player.passwordValido(pass)) {
-                JOptionPane.showMessageDialog(null,
-                        "El password debe tener exactamente 5 caracteres.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El password debe tener exactamente 5 caracteres.","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             Player nuevo = new Player(user, pass);
             storage.crearPlayer(nuevo);
-            JOptionPane.showMessageDialog(null,
-                    "¡Player creado exitosamente! Bienvenido " + nuevo.getUsername(),
-                    "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"¡Player creado exitosamente! Bienvenido " + nuevo.getUsername(), "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
             app.setPlayerLogueado(nuevo);
             app.getContenedor().add(new PanelMenuPrincipal(app, storage), "PRINCIPAL");
             app.getContenedor().revalidate();

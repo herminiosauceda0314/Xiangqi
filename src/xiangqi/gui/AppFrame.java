@@ -3,8 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package xiangqi.gui;
+
 import xiangqi.jugador.Player;
-import xiangqi.storage.StorageImpl;
+import xiangqi.datos.BaseDatos;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
@@ -18,27 +19,27 @@ public class AppFrame extends JFrame {
 
     private CardLayout cardLayout;
     private JPanel contenedor;
-    private StorageImpl storage;
+    private BaseDatos storage;
     private Player playerLogueado;
 
-    public AppFrame(StorageImpl storage) {
-        this.storage= storage;
-        this.cardLayout= new CardLayout();
-        this.contenedor= new JPanel(cardLayout);
+    public AppFrame(BaseDatos storage) {
+        this.storage = storage;
+        this.cardLayout = new CardLayout();
+        this.contenedor = new JPanel(cardLayout);
         initUI();
     }
 
     private void initUI() {
         setTitle("Xiangqi - Ajedrez Chino");
-        setSize(750, 700);//setSize(525, 650); // era 450, 500
+        setSize(750, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-        javax.swing.UIManager.put("OptionPane.background",        new Color(30, 30, 30));
-        javax.swing.UIManager.put("Panel.background",             new Color(30, 30, 30));
-        javax.swing.UIManager.put("OptionPane.messageForeground", new Color(255, 215, 0));
-        javax.swing.UIManager.put("Button.background",            new Color(60, 60, 60));
-        javax.swing.UIManager.put("Button.foreground",            new Color(255, 215, 0));
+        javax.swing.UIManager.put("OptionPane.background", new Color(45, 32, 22));
+        javax.swing.UIManager.put("Panel.background", new Color(45, 32, 22));
+        javax.swing.UIManager.put("OptionPane.messageForeground", new Color(250, 220, 170));
+        javax.swing.UIManager.put("Button.background", new Color(75, 55, 40));
+        javax.swing.UIManager.put("Button.foreground", new Color(210, 185, 145));
 
         contenedor.add(new PanelMenuInicio(this, storage), "INICIO");
 
@@ -48,7 +49,6 @@ public class AppFrame extends JFrame {
 
         setVisible(true);
     }
-
 
     public void mostrar(String pantalla) {
         cardLayout.show(contenedor, pantalla);
@@ -62,7 +62,7 @@ public class AppFrame extends JFrame {
         return playerLogueado;
     }
 
-    public StorageImpl getStorage() {
+    public BaseDatos getStorage() {
         return storage;
     }
 
@@ -73,6 +73,5 @@ public class AppFrame extends JFrame {
     public CardLayout getCardLayout() {
         return cardLayout;
     }
-    
-    
+
 }

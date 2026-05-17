@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package xiangqi.modelo;
+package xiangqi.piezas;
 
 /**
  *
@@ -36,6 +36,6 @@ public abstract class Pieza {
 
     public void setPos(int fila, int col) {
         this.fila = fila;
-        this.columna = columna;
+        this.columna = col;
     }
 }

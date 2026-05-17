@@ -5,7 +5,7 @@
 package xiangqi.gui;
 
 import xiangqi.jugador.Player;
-import xiangqi.storage.StorageImpl;
+import xiangqi.datos.BaseDatos;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -25,16 +25,16 @@ import javax.swing.JOptionPane;
  */
 public class PanelMiCuenta extends JPanel {
 
-    private static final Color FONDO = new Color(30, 30, 30);
-    private static final Color DORADO = new Color(255, 215, 0);
-    private static final Color TEXTO = Color.WHITE;
-    private static final Color BTN_FONDO = new Color(60, 60, 60);
-    private static final Color BTN_BORDE = new Color(255, 215, 0);
+    private static final Color FONDO = new Color(45, 32, 22);
+    private static final Color DORADO = new Color(250, 220, 170);
+    private static final Color TEXTO = new Color(210, 185, 145);
+    private static final Color BTN_FONDO = new Color(75, 55, 40);
+    private static final Color BTN_BORDE = new Color(180, 140, 90);
 
     private AppFrame app;
-    private StorageImpl storage;
+    private BaseDatos storage;
 
-    public PanelMiCuenta(AppFrame app, StorageImpl storage) {
+    public PanelMiCuenta(AppFrame app, BaseDatos storage) {
         this.app = app;
         this.storage = storage;
         initUI();
@@ -158,23 +158,17 @@ public class PanelMiCuenta extends JPanel {
             Player player = app.getPlayerLogueado();
 
             if (!actual.equals(player.getPassword())) {
-                JOptionPane.showMessageDialog(null,
-                        "Password actual incorrecto.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Password actual incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (!Player.passwordValido(nuevo)) {
-                JOptionPane.showMessageDialog(null,
-                        "El nuevo password debe tener exactamente 5 caracteres.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El nuevo password debe tener exactamente 5 caracteres.","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             player.setPassword(nuevo);
             storage.actualizarPlayer(player);
-            JOptionPane.showMessageDialog(null,
-                    "¡Password cambiado exitosamente!",
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "¡Password cambiado exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             app.getContenedor().add(new PanelMiCuenta(app, storage), "MICUENTA");
             app.mostrar("MICUENTA");
         });
@@ -229,16 +223,12 @@ public class PanelMiCuenta extends JPanel {
             Player player = app.getPlayerLogueado();
 
             if (!pass.equals(player.getPassword())) {
-                JOptionPane.showMessageDialog(null,
-                        "Password incorrecto.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Password incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             storage.eliminarPlayer(player.getUsername());
-            JOptionPane.showMessageDialog(null,
-                    "Cuenta eliminada exitosamente.",
-                    "Cuenta Eliminada", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Cuenta eliminada exitosamente.", "Cuenta Eliminada", JOptionPane.INFORMATION_MESSAGE);
             app.setPlayerLogueado(null);
             app.mostrar("INICIO");
         });

@@ -4,9 +4,16 @@
  */
 package xiangqi.gui;
 
+import xiangqi.piezas.Soldado;
+import xiangqi.piezas.Carro;
+import xiangqi.piezas.Caballo;
+import xiangqi.piezas.Elefante;
+import xiangqi.piezas.General;
+import xiangqi.piezas.Oficial;
+import xiangqi.piezas.Cannon;
+import xiangqi.piezas.Pieza;
 import xiangqi.jugador.Player;
-import xiangqi.modelo.*;
-import xiangqi.storage.StorageImpl;
+import xiangqi.datos.BaseDatos;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -38,7 +45,7 @@ public class PanelTablero extends JPanel {
     private static final Color COLOR_RIO_BORDE = new Color(100, 160, 220);
 
     private AppFrame app;
-    private StorageImpl storage;
+    private BaseDatos storage;
     private Player jugadorRojo;
     private Player jugadorNegro;
 
@@ -55,7 +62,7 @@ public class PanelTablero extends JPanel {
     private JPanel panelComidasRojo;
     private JPanel panelComidasNegro;
 
-    public PanelTablero(AppFrame app, StorageImpl storage,
+    public PanelTablero(AppFrame app, BaseDatos storage,
             Player jugadorRojo, Player jugadorNegro) {
         this.app = app;
         this.storage = storage;
@@ -103,10 +110,10 @@ public class PanelTablero extends JPanel {
 
     private void initUI() {
         setLayout(new BorderLayout(5, 5));
-        setBackground(new Color(30, 30, 30));
+        setBackground(new Color(45, 32, 22));
 
         JPanel panelNorte = new JPanel(new GridBagLayout());
-        panelNorte.setBackground(new Color(30, 30, 30));
+        panelNorte.setBackground(new Color(45, 32, 22));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -114,25 +121,24 @@ public class PanelTablero extends JPanel {
 
         JLabel lblTitulo = new JLabel("XIANGQI", SwingConstants.CENTER);
         lblTitulo.setFont(new Font("Serif", Font.BOLD, 28));
-        lblTitulo.setForeground(new Color(255, 215, 0));
+        lblTitulo.setForeground(new Color(250, 220, 170));
         panelNorte.add(lblTitulo, gbc);
 
         lblTurno = new JLabel(getTurnoTexto(), SwingConstants.CENTER);
         lblTurno.setFont(new Font("Arial", Font.BOLD, 16));
-        lblTurno.setForeground(Color.WHITE);
+        lblTurno.setForeground(new Color(210, 185, 145));
         gbc.gridy = 1;
         gbc.insets = new Insets(2, 0, 8, 0);
         panelNorte.add(lblTurno, gbc);
 
         JPanel panelTablero = new JPanel(new GridLayout(FILAS, COLS));
-        panelTablero.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        panelTablero.setBorder(BorderFactory.createLineBorder(new Color(120, 88, 55), 3));
 
         for (int f = 0; f < FILAS; f++) {
             for (int c = 0; c < COLS; c++) {
                 JButton celda = new JButton();
                 celda.setFocusPainted(false);
                 celda.setPreferredSize(new java.awt.Dimension(68, 68));
-
                 celda.setBackground(getColorCelda(f, c));
 
                 if (f == 4) {
@@ -147,7 +153,6 @@ public class PanelTablero extends JPanel {
                 }
 
                 actualizarCelda(celda, f, c);
-
                 final int fila = f;
                 final int col = c;
                 celda.addActionListener(e -> manejarClick(fila, col));
@@ -158,61 +163,60 @@ public class PanelTablero extends JPanel {
         }
 
         JPanel panelNumeros = new JPanel(new GridLayout(FILAS, 1));
-        panelNumeros.setBackground(new Color(30, 30, 30));
+        panelNumeros.setBackground(new Color(45, 32, 22));
         for (int f = 0; f < FILAS; f++) {
             JLabel lbl = new JLabel(String.valueOf(FILAS - f), SwingConstants.CENTER);
             lbl.setFont(new Font("Arial", Font.BOLD, 12));
-            lbl.setForeground(new Color(255, 215, 0));
+            lbl.setForeground(new Color(250, 220, 170));
             lbl.setPreferredSize(new java.awt.Dimension(25, 68));
             panelNumeros.add(lbl);
         }
 
         JPanel panelLetras = new JPanel(new GridLayout(1, COLS));
-        panelLetras.setBackground(new Color(30, 30, 30));
+        panelLetras.setBackground(new Color(45, 32, 22));
         String[] letras = {"a", "b", "c", "d", "e", "f", "g", "h", "i"};
         for (String letra : letras) {
             JLabel lbl = new JLabel(letra, SwingConstants.CENTER);
             lbl.setFont(new Font("Arial", Font.BOLD, 12));
-            lbl.setForeground(new Color(255, 215, 0));
+            lbl.setForeground(new Color(250, 220, 170));
             panelLetras.add(lbl);
         }
 
         JPanel panelTableroYNumeros = new JPanel(new BorderLayout());
-        panelTableroYNumeros.setBackground(new Color(30, 30, 30));
+        panelTableroYNumeros.setBackground(new Color(45, 32, 22));
         panelTableroYNumeros.add(panelTablero, BorderLayout.CENTER);
         panelTableroYNumeros.add(panelNumeros, BorderLayout.EAST);
 
         JPanel espacioLetras = new JPanel();
-        espacioLetras.setBackground(new Color(30, 30, 30));
+        espacioLetras.setBackground(new Color(45, 32, 22));
         espacioLetras.setPreferredSize(new java.awt.Dimension(25, 20));
 
         JPanel panelLetrasConMargen = new JPanel(new BorderLayout());
-        panelLetrasConMargen.setBackground(new Color(30, 30, 30));
+        panelLetrasConMargen.setBackground(new Color(45, 32, 22));
         panelLetrasConMargen.add(panelLetras, BorderLayout.CENTER);
         panelLetrasConMargen.add(espacioLetras, BorderLayout.EAST);
 
         JPanel panelConCoordenadas = new JPanel(new BorderLayout());
-        panelConCoordenadas.setBackground(new Color(30, 30, 30));
+        panelConCoordenadas.setBackground(new Color(45, 32, 22));
         panelConCoordenadas.add(panelTableroYNumeros, BorderLayout.CENTER);
         panelConCoordenadas.add(panelLetrasConMargen, BorderLayout.SOUTH);
 
         JPanel panelIzquierdo = crearPanelJugador(
                 jugadorNegro.getUsername(),
                 "♚", Color.BLACK,
-                "NEGRO", Color.LIGHT_GRAY,
+                "NEGRO", new Color(210, 185, 145),
                 false
         );
 
         JPanel panelDerecho = crearPanelJugador(
                 jugadorRojo.getUsername(),
                 "♔", new Color(180, 0, 0),
-                "ROJO", new Color(255, 100, 100),
+                "ROJO", new Color(210, 120, 90),
                 true
         );
 
-        // ── Contenedor con GridBagLayout ──────────────────────
         JPanel contenedor = new JPanel(new GridBagLayout());
-        contenedor.setBackground(new Color(30, 30, 30));
+        contenedor.setBackground(new Color(45, 32, 22));
         GridBagConstraints g = new GridBagConstraints();
         g.fill = GridBagConstraints.BOTH;
         g.gridy = 0;
@@ -257,10 +261,8 @@ public class PanelTablero extends JPanel {
                 return new java.awt.Dimension(130, Integer.MAX_VALUE);
             }
         };
-        panel.setBackground(new Color(40, 40, 40));
-        panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(80, 80, 80), 1),
-                BorderFactory.createEmptyBorder(8, 6, 8, 6)
+        panel.setBackground(new Color(60, 43, 28));
+        panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(120, 88, 55), 1), BorderFactory.createEmptyBorder(8, 6, 8, 6)
         ));
 
         GridBagConstraints g = new GridBagConstraints();
@@ -271,7 +273,7 @@ public class PanelTablero extends JPanel {
 
         JLabel lblNombre = new JLabel(nombre, SwingConstants.CENTER);
         lblNombre.setFont(new Font("Arial", Font.BOLD, 12));
-        lblNombre.setForeground(Color.WHITE);
+        lblNombre.setForeground(new Color(250, 220, 170));
         g.gridy = 0;
         panel.add(lblNombre, g);
 
@@ -288,7 +290,7 @@ public class PanelTablero extends JPanel {
         panel.add(lblColor, g);
 
         javax.swing.JSeparator sep = new javax.swing.JSeparator();
-        sep.setForeground(new Color(80, 80, 80));
+        sep.setForeground(new Color(120, 88, 55));
         g.gridy = 3;
         g.insets = new Insets(6, 3, 3, 3);
         panel.add(sep, g);
@@ -300,12 +302,9 @@ public class PanelTablero extends JPanel {
         g.insets = new Insets(3, 3, 3, 3);
         panel.add(lblTituloComidas, g);
 
-        JPanel cajaPiezas = new JPanel(new java.awt.FlowLayout(
-                java.awt.FlowLayout.CENTER, 2, 2));
-        cajaPiezas.setBackground(new Color(25, 25, 25));
-        cajaPiezas.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(90, 90, 90), 1),
-                BorderFactory.createEmptyBorder(3, 3, 3, 3)
+        JPanel cajaPiezas = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 2, 2));
+        cajaPiezas.setBackground(new Color(30, 20, 12));
+        cajaPiezas.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(120, 88, 55), 1), BorderFactory.createEmptyBorder(3, 3, 3, 3)
         ));
         cajaPiezas.setPreferredSize(new java.awt.Dimension(110, 110));
         cajaPiezas.setMinimumSize(new java.awt.Dimension(110, 110));
@@ -322,7 +321,7 @@ public class PanelTablero extends JPanel {
         }
 
         JPanel spacer = new JPanel();
-        spacer.setBackground(new Color(40, 40, 40));
+        spacer.setBackground(new Color(60, 43, 28));
         g.gridy = 6;
         g.weighty = 1;
         g.fill = GridBagConstraints.BOTH;
@@ -331,7 +330,7 @@ public class PanelTablero extends JPanel {
         if (conBotonRetirar) {
             JButton btnRetirar = new JButton("Retirar");
             btnRetirar.setFont(new Font("Arial", Font.BOLD, 12));
-            btnRetirar.setForeground(Color.WHITE);
+            btnRetirar.setForeground(new Color(250, 220, 170));
             btnRetirar.setBackground(new Color(160, 0, 0));
             btnRetirar.setFocusPainted(false);
             btnRetirar.addActionListener(e -> confirmarRetiro());
@@ -395,8 +394,7 @@ public class PanelTablero extends JPanel {
 
         if (url != null) {
             javax.swing.ImageIcon icon = new javax.swing.ImageIcon(url);
-            java.awt.Image img = icon.getImage()
-                    .getScaledInstance(52, 52, java.awt.Image.SCALE_SMOOTH);
+            java.awt.Image img = icon.getImage().getScaledInstance(52, 52, java.awt.Image.SCALE_SMOOTH);
             return new javax.swing.ImageIcon(img);
         }
         return null;
@@ -419,7 +417,6 @@ public class PanelTablero extends JPanel {
             }
             panelComidasRojo.add(lbl);
         }
-
         for (Pieza p : piezasComidasPorNegro) {
             JLabel lbl = new JLabel();
             javax.swing.ImageIcon icon = getImagen(p);
@@ -433,7 +430,6 @@ public class PanelTablero extends JPanel {
             }
             panelComidasNegro.add(lbl);
         }
-
         panelComidasRojo.revalidate();
         panelComidasRojo.repaint();
         panelComidasNegro.revalidate();
@@ -467,8 +463,7 @@ public class PanelTablero extends JPanel {
         }
     }
 
-    private boolean dejaGeneralesEnfrentados(int filaOrigen, int colOrigen,
-            int filaDestino, int colDestino) {
+    private boolean dejaGeneralesEnfrentados(int filaOrigen, int colOrigen, int filaDestino, int colDestino) {
         Pieza[][] copia = new Pieza[FILAS][COLS];
         for (int f = 0; f < FILAS; f++) {
             for (int c = 0; c < COLS; c++) {
@@ -555,9 +550,7 @@ public class PanelTablero extends JPanel {
         if (piezaSeleccionada.esMovimientoValido(fila, col, tablero)) {
 
             if (dejaGeneralesEnfrentados(filaSeleccionada, colSeleccionada, fila, col)) {
-                JOptionPane.showMessageDialog(null,
-                        "Movimiento inválido: los Generales no pueden verse de frente.",
-                        "Movimiento Ilegal", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Movimiento inválido: los Generales no pueden verse de frente.", "Movimiento Ilegal", JOptionPane.WARNING_MESSAGE);
                 limpiarMovimientosValidos();
                 deseleccionar();
                 return;
@@ -592,8 +585,7 @@ public class PanelTablero extends JPanel {
             colSeleccionada = -1;
 
             if (ganoJuego) {
-                terminarJuego(turnoRojo ? jugadorRojo : jugadorNegro,
-                        turnoRojo ? jugadorNegro : jugadorRojo,
+                terminarJuego(turnoRojo ? jugadorRojo : jugadorNegro, turnoRojo ? jugadorNegro : jugadorRojo,
                         false);
                 return;
             }
@@ -618,13 +610,9 @@ public class PanelTablero extends JPanel {
     }
 
     private void confirmarRetiro() {
-        int res = JOptionPane.showConfirmDialog(
-                this,
-                "¿Estás seguro que deseas retirarte?",
-                "Confirmar Retiro",
-                JOptionPane.YES_NO_OPTION
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas retirarte?", "Confirmar Retiro", JOptionPane.YES_NO_OPTION
         );
-        if (res == JOptionPane.YES_OPTION) {
+        if (respuesta == JOptionPane.YES_OPTION) {
             Player perdedor = turnoRojo ? jugadorRojo : jugadorNegro;
             Player ganador = turnoRojo ? jugadorNegro : jugadorRojo;
             terminarJuego(ganador, perdedor, true);
@@ -634,20 +622,27 @@ public class PanelTablero extends JPanel {
     private void terminarJuego(Player ganador, Player perdedor, boolean retiro) {
         ganador.ganarPartida();
         storage.actualizarPlayer(ganador);
+        storage.actualizarPlayer(perdedor);
 
-        String mensaje;
+        String mensajeGanador;
+        String mensajePerdedor;
+
         if (retiro) {
-            mensaje = perdedor.getUsername() + " SE HA RETIRADO, FELICIDADES "
-                    + ganador.getUsername() + ", HAS GANADO 3 PUNTOS";
+            mensajeGanador = "TU OPONENTE " + perdedor.getUsername() + " SE RETIRO, GANASTE 3 PUNTOS";
+            mensajePerdedor = "TE RETIRASTE, TU OPONENTE " + ganador.getUsername() + " GANO";
         } else {
-            mensaje = ganador.getUsername() + " VENCIO A " + perdedor.getUsername()
-                    + ", FELICIDADES HAS GANADO 3 PUNTOS";
+            mensajeGanador = "VENCISTE A " + perdedor.getUsername() + ", GANASTE 3 PUNTOS";
+            mensajePerdedor = perdedor.getUsername() + " FUE VENCIDO POR " + ganador.getUsername();
         }
 
-        storage.guardarLog(ganador.getUsername(), mensaje);
-        storage.guardarLog(perdedor.getUsername(), mensaje);
+        storage.guardarLog(ganador.getUsername(), mensajeGanador);
+        storage.guardarLog(perdedor.getUsername(), mensajePerdedor);
 
-        JOptionPane.showMessageDialog(this, mensaje, "Fin del juego",
+        String mensajePopup = retiro
+                ? "FELICIDADES " + ganador.getUsername() + " GANO, SU OPONENTE " + perdedor.getUsername() + " SE RETIRO"
+                : "FELICIDADES " + ganador.getUsername() + " VENCIO A " + perdedor.getUsername() + " !!";
+
+        JOptionPane.showMessageDialog(this, mensajePopup, "Fin del juego",
                 JOptionPane.INFORMATION_MESSAGE);
 
         app.getContenedor().add(new PanelMenuPrincipal(app, storage), "PRINCIPAL");
