@@ -13,7 +13,7 @@ import xiangqi.piezas.Oficial;
 import xiangqi.piezas.Cannon;
 import xiangqi.piezas.Pieza;
 import xiangqi.jugador.Player;
-import xiangqi.datos.BaseDatos;
+import xiangqi.almacenamiento.AlmacenamientoImp;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -45,7 +45,7 @@ public class PanelTablero extends JPanel {
     private static final Color COLOR_RIO_BORDE = new Color(100, 160, 220);
 
     private AppFrame app;
-    private BaseDatos storage;
+    private AlmacenamientoImp almacenamiento;
     private Player jugadorRojo;
     private Player jugadorNegro;
 
@@ -62,10 +62,9 @@ public class PanelTablero extends JPanel {
     private JPanel panelComidasRojo;
     private JPanel panelComidasNegro;
 
-    public PanelTablero(AppFrame app, BaseDatos storage,
-            Player jugadorRojo, Player jugadorNegro) {
+    public PanelTablero(AppFrame app, AlmacenamientoImp almacenamiento, Player jugadorRojo, Player jugadorNegro) {
         this.app = app;
-        this.storage = storage;
+        this.almacenamiento = almacenamiento;
         this.jugadorRojo = jugadorRojo;
         this.jugadorNegro = jugadorNegro;
         inicializarTablero();
@@ -621,31 +620,32 @@ public class PanelTablero extends JPanel {
 
     private void terminarJuego(Player ganador, Player perdedor, boolean retiro) {
         ganador.ganarPartida();
-        storage.actualizarPlayer(ganador);
-        storage.actualizarPlayer(perdedor);
+        almacenamiento.actualizarPlayer(ganador);
+        almacenamiento.actualizarPlayer(perdedor);
 
         String mensajeGanador;
         String mensajePerdedor;
 
-        if (retiro) {
-            mensajeGanador = "TU OPONENTE " + perdedor.getUsername() + " SE RETIRO, GANASTE 3 PUNTOS";
-            mensajePerdedor = "TE RETIRASTE, TU OPONENTE " + ganador.getUsername() + " GANO";
-        } else {
-            mensajeGanador = "VENCISTE A " + perdedor.getUsername() + ", GANASTE 3 PUNTOS";
-            mensajePerdedor = perdedor.getUsername() + " FUE VENCIDO POR " + ganador.getUsername();
+        //logs
+        if (retiro) { //si se retiro
+            mensajeGanador =  perdedor.getUsername() + " SE HA RETIRADO, FELICIDADES " + ganador.getUsername() + ", HAS GANADO 3 PUNTOS";
+            mensajePerdedor = "TE RETIRASTE DE LA PARTIDA , TU OPONENTE " + ganador.getUsername() + " GANO 3 PUNTOS";
+        } else { //si gano
+            mensajeGanador = ganador.getUsername() + " VENCIO A " + perdedor.getUsername() + ", FELICIDADES HAS GANADO 3";
+            mensajePerdedor = perdedor.getUsername() + " FUE VENCIDO POR " + ganador.getUsername() + ", GANO 3 PUNTOS";
         }
 
-        storage.guardarLog(ganador.getUsername(), mensajeGanador);
-        storage.guardarLog(perdedor.getUsername(), mensajePerdedor);
+        almacenamiento.guardarLog(ganador.getUsername(), mensajeGanador);
+        almacenamiento.guardarLog(perdedor.getUsername(), mensajePerdedor);
 
+        //popups
         String mensajePopup = retiro
-                ? "FELICIDADES " + ganador.getUsername() + " GANO, SU OPONENTE " + perdedor.getUsername() + " SE RETIRO"
-                : "FELICIDADES " + ganador.getUsername() + " VENCIO A " + perdedor.getUsername() + " !!";
+                ? perdedor.getUsername() + " SE HA RETIRADO, FELICIDADES " + ganador.getUsername() + ", HAS GANADO 3 PUNTOS"
+                : ganador.getUsername() + " VENCIO A " + perdedor.getUsername() + ", FELICIDADES HAS GANADO 3";
 
-        JOptionPane.showMessageDialog(this, mensajePopup, "Fin del juego",
-                JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, mensajePopup, "Fin del juego",JOptionPane.INFORMATION_MESSAGE);
 
-        app.getContenedor().add(new PanelMenuPrincipal(app, storage), "PRINCIPAL");
+        app.getContenedor().add(new PanelMenuPrincipal(app, almacenamiento), "PRINCIPAL");
         app.getContenedor().revalidate();
         app.getContenedor().repaint();
         app.mostrar("PRINCIPAL");

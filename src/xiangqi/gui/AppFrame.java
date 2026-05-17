@@ -5,7 +5,7 @@
 package xiangqi.gui;
 
 import xiangqi.jugador.Player;
-import xiangqi.datos.BaseDatos;
+import xiangqi.almacenamiento.AlmacenamientoImp;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
@@ -19,10 +19,10 @@ public class AppFrame extends JFrame {
 
     private CardLayout cardLayout;
     private JPanel contenedor;
-    private BaseDatos storage;
+    private AlmacenamientoImp storage;
     private Player playerLogueado;
 
-    public AppFrame(BaseDatos storage) {
+    public AppFrame(AlmacenamientoImp storage) {
         this.storage = storage;
         this.cardLayout = new CardLayout();
         this.contenedor = new JPanel(cardLayout);
@@ -62,7 +62,7 @@ public class AppFrame extends JFrame {
         return playerLogueado;
     }
 
-    public BaseDatos getStorage() {
+    public AlmacenamientoImp getStorage() {
         return storage;
     }
 

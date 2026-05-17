@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package xiangqi.datos;
+package xiangqi.almacenamiento;
 
 import java.util.ArrayList;
 import xiangqi.jugador.Player;
@@ -11,7 +11,7 @@ import xiangqi.jugador.Player;
  *
  * @author hermi
  */
-public interface Datos {
+public interface Almacenamiento {
 
     //de player
     void crearPlayer(Player p);

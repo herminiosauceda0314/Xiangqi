@@ -5,7 +5,7 @@
 package xiangqi.gui;
 
 import xiangqi.jugador.Player;
-import xiangqi.datos.BaseDatos;
+import xiangqi.almacenamiento.AlmacenamientoImp;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -34,9 +34,9 @@ public class PanelReportes extends JPanel {
     private static final Color BTN_BORDE = new Color(180, 140, 90);
 
     private AppFrame app;
-    private BaseDatos storage;
+    private AlmacenamientoImp storage;
 
-    public PanelReportes(AppFrame app, BaseDatos storage) {
+    public PanelReportes(AppFrame app, AlmacenamientoImp storage) {
         this.app = app;
         this.storage = storage;
         initUI();

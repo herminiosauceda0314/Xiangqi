@@ -6,7 +6,7 @@ package xiangqi;
 
 import javax.swing.SwingUtilities;
 import xiangqi.gui.AppFrame;
-import xiangqi.datos.BaseDatos;
+import xiangqi.almacenamiento.AlmacenamientoImp;
 
 /**
  *
@@ -15,7 +15,7 @@ import xiangqi.datos.BaseDatos;
 public class Xiangqi {
 
     public static void main(String[] args) {
-        BaseDatos storage = new BaseDatos();
+        AlmacenamientoImp storage = new AlmacenamientoImp();
 
         SwingUtilities.invokeLater(() -> {
             new AppFrame(storage);
