@@ -42,7 +42,6 @@ public class PanelTablero extends JPanel {
     private static final Color COLOR_OSCURO = new Color(100, 140, 80);
     private static final Color COLOR_SEL = new Color(255, 255, 100);
     private static final Color COLOR_MOVIBLE = new Color(100, 220, 100);
-    private static final Color COLOR_RIO_BORDE = new Color(100, 160, 220);
 
     private AppFrame app;
     private AlmacenamientoImp almacenamiento;
@@ -549,7 +548,7 @@ public class PanelTablero extends JPanel {
         if (piezaSeleccionada.esMovimientoValido(fila, col, tablero)) {
 
             if (dejaGeneralesEnfrentados(filaSeleccionada, colSeleccionada, fila, col)) {
-                JOptionPane.showMessageDialog(null, "Movimiento inválido: los Generales no pueden verse de frente.", "Movimiento Ilegal", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Movimiento invalido: los Generales no pueden verse de frente.", "Movimiento Ilegal", JOptionPane.WARNING_MESSAGE);
                 limpiarMovimientosValidos();
                 deseleccionar();
                 return;
@@ -609,7 +608,7 @@ public class PanelTablero extends JPanel {
     }
 
     private void confirmarRetiro() {
-        int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas retirarte?", "Confirmar Retiro", JOptionPane.YES_NO_OPTION
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas retirarte?", "Confirmar Retiro", JOptionPane.YES_NO_OPTION
         );
         if (respuesta == JOptionPane.YES_OPTION) {
             Player perdedor = turnoRojo ? jugadorRojo : jugadorNegro;

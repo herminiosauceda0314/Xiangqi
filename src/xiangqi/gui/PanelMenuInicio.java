@@ -33,11 +33,11 @@ public class PanelMenuInicio extends JPanel {
     private static final Color BTN_BORDE = new Color(180, 140, 90);
 
     private AppFrame app;
-    private AlmacenamientoImp storage;
+    private AlmacenamientoImp almacenamiento;
 
-    public PanelMenuInicio(AppFrame app, AlmacenamientoImp storage) {
+    public PanelMenuInicio(AppFrame app, AlmacenamientoImp almacenamiento) {
         this.app = app;
-        this.storage = storage;
+        this.almacenamiento = almacenamiento;
         initUI();
     }
 
@@ -147,12 +147,12 @@ public class PanelMenuInicio extends JPanel {
         btnEntrar.addActionListener(e -> {
             String user = txtUser.getText().trim();
             String pass = new String(txtPass.getPassword());
-            Player player = storage.buscarPlayer(user);
+            Player player = almacenamiento.buscarPlayer(user);
 
             if (player != null && player.getPassword().equals(pass) && player.isActivo()) {
                 JOptionPane.showMessageDialog(null,"¡Login exitoso! Bienvenido " + player.getUsername(), "Login", JOptionPane.INFORMATION_MESSAGE);
                 app.setPlayerLogueado(player);
-                app.getContenedor().add(new PanelMenuPrincipal(app, storage), "PRINCIPAL");
+                app.getContenedor().add(new PanelMenuPrincipal(app, almacenamiento), "PRINCIPAL");
                 app.getContenedor().revalidate();
                 app.getContenedor().repaint();
                 app.mostrar("PRINCIPAL");
@@ -179,7 +179,7 @@ public class PanelMenuInicio extends JPanel {
         gbc.ipadx = 0;
         panel.add(titulo, gbc);
 
-        JLabel lblUser = new JLabel("Username (único):");
+        JLabel lblUser = new JLabel("Username (unico):");
         lblUser.setFont(new Font("Arial", Font.PLAIN, 14));
         lblUser.setForeground(TEXTO);
         gbc.gridy = 1;
@@ -226,7 +226,7 @@ public class PanelMenuInicio extends JPanel {
                 JOptionPane.showMessageDialog(null, "El username no puede estar vacío.","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (storage.buscarPlayer(user) != null) {
+            if (almacenamiento.buscarPlayer(user) != null) {
                 JOptionPane.showMessageDialog(null,"Ese username ya existe, elige otro.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -236,10 +236,10 @@ public class PanelMenuInicio extends JPanel {
             }
 
             Player nuevo = new Player(user, pass);
-            storage.crearPlayer(nuevo);
+            almacenamiento.crearPlayer(nuevo);
             JOptionPane.showMessageDialog(null,"¡Player creado exitosamente! Bienvenido " + nuevo.getUsername(), "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
             app.setPlayerLogueado(nuevo);
-            app.getContenedor().add(new PanelMenuPrincipal(app, storage), "PRINCIPAL");
+            app.getContenedor().add(new PanelMenuPrincipal(app, almacenamiento), "PRINCIPAL");
             app.getContenedor().revalidate();
             app.getContenedor().repaint();
             app.mostrar("PRINCIPAL");

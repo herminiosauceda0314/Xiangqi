@@ -69,7 +69,7 @@ public class PanelReportes extends JPanel {
         gbc.ipadx = 120;
 
         JButton btnRanking = crearBoton("Ranking de Jugadores");
-        JButton btnLogs = crearBoton("Mis Últimos Partidos");
+        JButton btnLogs = crearBoton("Mis Ultimos Partidos");
         JButton btnVolver = crearBoton("Volver");
 
         gbc.gridy = 0;
@@ -132,7 +132,7 @@ public class PanelReportes extends JPanel {
         sb.append("=== MIS ULTIMOS PARTIDOS ===\n\n");
 
         if (logs.isEmpty()) {
-            sb.append("No tienes partidos registrados aún.");
+            sb.append("No tienes partidos registrados aun.");
         } else {
             for (String log : logs) {
                 sb.append(log).append("\n");

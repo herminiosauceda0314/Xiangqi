@@ -19,11 +19,11 @@ public class AppFrame extends JFrame {
 
     private CardLayout cardLayout;
     private JPanel contenedor;
-    private AlmacenamientoImp storage;
+    private AlmacenamientoImp almacenamiento;
     private Player playerLogueado;
 
-    public AppFrame(AlmacenamientoImp storage) {
-        this.storage = storage;
+    public AppFrame(AlmacenamientoImp almacenamiento) {
+        this.almacenamiento = almacenamiento;
         this.cardLayout = new CardLayout();
         this.contenedor = new JPanel(cardLayout);
         initUI();
@@ -41,7 +41,7 @@ public class AppFrame extends JFrame {
         javax.swing.UIManager.put("Button.background", new Color(75, 55, 40));
         javax.swing.UIManager.put("Button.foreground", new Color(210, 185, 145));
 
-        contenedor.add(new PanelMenuInicio(this, storage), "INICIO");
+        contenedor.add(new PanelMenuInicio(this, almacenamiento), "INICIO");
 
         add(contenedor);
 
@@ -62,8 +62,8 @@ public class AppFrame extends JFrame {
         return playerLogueado;
     }
 
-    public AlmacenamientoImp getStorage() {
-        return storage;
+    public AlmacenamientoImp getAlmacenamiento() {
+        return almacenamiento;
     }
 
     public JPanel getContenedor() {

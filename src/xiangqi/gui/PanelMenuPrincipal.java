@@ -30,11 +30,11 @@ public class PanelMenuPrincipal extends JPanel {
     private static final Color BTN_BORDE = new Color(180, 140, 90);
 
     private AppFrame app;
-    private AlmacenamientoImp storage;
+    private AlmacenamientoImp almacenamiento;
 
-    public PanelMenuPrincipal(AppFrame app, AlmacenamientoImp storage) {
+    public PanelMenuPrincipal(AppFrame app, AlmacenamientoImp almacenamiento) {
         this.app = app;
-        this.storage = storage;
+        this.almacenamiento = almacenamiento;
         initUI();
     }
 
@@ -62,7 +62,7 @@ public class PanelMenuPrincipal extends JPanel {
         JButton btnJugar = crearBoton("1. Jugar Xiangqi");
         JButton btnCuenta = crearBoton("2. Mi Cuenta");
         JButton btnReportes = crearBoton("3. Reportes");
-        JButton btnLogout = crearBoton("4. Cerrar Sesión");
+        JButton btnLogout = crearBoton("4. Cerrar Sesion");
 
         gbc.ipadx = 120;
         gbc.gridy = 2;
@@ -76,11 +76,11 @@ public class PanelMenuPrincipal extends JPanel {
 
         btnJugar.addActionListener(e -> abrirJuego());
         btnCuenta.addActionListener(e -> {
-            app.getContenedor().add(new PanelMiCuenta(app, storage), "MICUENTA");
+            app.getContenedor().add(new PanelMiCuenta(app, almacenamiento), "MICUENTA");
             app.mostrar("MICUENTA");
         });
         btnReportes.addActionListener(e -> {
-            app.getContenedor().add(new PanelReportes(app, storage), "REPORTES");
+            app.getContenedor().add(new PanelReportes(app, almacenamiento), "REPORTES");
             app.mostrar("REPORTES");
         });
         btnLogout.addActionListener(e -> {
@@ -100,7 +100,7 @@ public class PanelMenuPrincipal extends JPanel {
     }
 
     private void abrirJuego() {
-        java.util.ArrayList<Player> todos = storage.getTodosLosPlayers();
+        java.util.ArrayList<Player> todos = almacenamiento.getTodosLosPlayers();
         todos.removeIf(p -> p.getUsername().equals(app.getPlayerLogueado().getUsername()));
 
         if (todos.isEmpty()) {
@@ -149,7 +149,7 @@ public class PanelMenuPrincipal extends JPanel {
 
             btnOponente.addActionListener(e -> {
                 app.getContenedor().add(
-                        new PanelTablero(app, storage, app.getPlayerLogueado(), oponente),
+                        new PanelTablero(app, almacenamiento, app.getPlayerLogueado(), oponente),
                         "TABLERO"
                 );
                 app.mostrar("TABLERO");

@@ -32,11 +32,11 @@ public class PanelMiCuenta extends JPanel {
     private static final Color BTN_BORDE = new Color(180, 140, 90);
 
     private AppFrame app;
-    private AlmacenamientoImp storage;
+    private AlmacenamientoImp almacenamiento;
 
-    public PanelMiCuenta(AppFrame app, AlmacenamientoImp storage) {
+    public PanelMiCuenta(AppFrame app, AlmacenamientoImp almacenamiento) {
         this.app = app;
-        this.storage = storage;
+        this.almacenamiento = almacenamiento;
         initUI();
     }
 
@@ -167,14 +167,14 @@ public class PanelMiCuenta extends JPanel {
             }
 
             player.setPassword(nuevo);
-            storage.actualizarPlayer(player);
-            JOptionPane.showMessageDialog(null, "¡Password cambiado exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            app.getContenedor().add(new PanelMiCuenta(app, storage), "MICUENTA");
+            almacenamiento.actualizarPlayer(player);
+            JOptionPane.showMessageDialog(null, "¡Password cambiado exitosamente!", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            app.getContenedor().add(new PanelMiCuenta(app, almacenamiento), "MICUENTA");
             app.mostrar("MICUENTA");
         });
 
         btnVolver.addActionListener(e -> {
-            app.getContenedor().add(new PanelMiCuenta(app, storage), "MICUENTA");
+            app.getContenedor().add(new PanelMiCuenta(app, almacenamiento), "MICUENTA");
             app.mostrar("MICUENTA");
         });
     }
@@ -227,14 +227,14 @@ public class PanelMiCuenta extends JPanel {
                 return;
             }
 
-            storage.eliminarPlayer(player.getUsername());
+            almacenamiento.eliminarPlayer(player.getUsername());
             JOptionPane.showMessageDialog(null, "Cuenta eliminada exitosamente.", "Cuenta Eliminada", JOptionPane.INFORMATION_MESSAGE);
             app.setPlayerLogueado(null);
             app.mostrar("INICIO");
         });
 
         btnVolver.addActionListener(e -> {
-            app.getContenedor().add(new PanelMiCuenta(app, storage), "MICUENTA");
+            app.getContenedor().add(new PanelMiCuenta(app, almacenamiento), "MICUENTA");
             app.mostrar("MICUENTA");
         });
     }
